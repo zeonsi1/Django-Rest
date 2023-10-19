@@ -4,9 +4,10 @@ from django.db import models
 class Usuario(models.Model):
     id_usuario = models.IntegerField(primary_key=True, verbose_name='Id del Usuario')
     nombre_usuario = models.CharField(max_length=50, verbose_name='Nombre del Usuario')
+    pnombre_usuario = models.CharField(max_length=30, verbose_name='Primer nombre', blank=False, null=False)
+    apaterno_usuario = models.CharField(max_length=30, verbose_name='Apellido Paterno', blank=False, null=False)
     direccion_usuario = models.CharField(max_length=50, verbose_name='Direccion del Usuario')
     password_usuario = models.CharField(max_length=50, verbose_name='Contrasenna del Usuario')
-    mail_usuario = models.EmailField(unique=True, blank=True, null=True, max_length=100, verbose_name='Mail del Usuario')
     tipo_usuario = models.ForeignKey('tipoUsuario', on_delete=models.CASCADE, db_column='idTipo', blank=True, null=True)
 #    num_telefono = models.ForeignKey('Telefono',  on_delete=models.CASCADE, db_column='Telefono')
 #    direccion = models.ForeignKey('Direccion', on_delete=models.CASCADE, db_column='Direccion')
