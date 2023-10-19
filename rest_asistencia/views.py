@@ -15,4 +15,4 @@ def lista_usuarios(request):
     usuario = Usuario.objects.all()
     serializer = UsuarioSerializer(usuario, many=True)
     return Response(serializer.data)    
-    
+
