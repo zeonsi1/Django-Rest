@@ -40,11 +40,13 @@ INSTALLED_APPS = [
     'rest_framework',
     'core',
     'rest_asistencia',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -79,9 +81,9 @@ WSGI_APPLICATION = 'ApiRest.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.oracle',
-        'NAME': 'du2ze2hc63gcd1eh_high',
-        'USER': 'mobile',
-        'PASSWORD': 'Awsazureduoc1',
+        'NAME': '127.0.0.1:1521/orcl',
+        'USER': 'hr',
+        'PASSWORD': 'hr',
     }
 }
 
@@ -126,3 +128,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CORS_ALLOWED_ORIGINS =[
+    "http://localhost:8100",
+]
+
+CORS_ALLOW_ALL_ORIGINS = True
