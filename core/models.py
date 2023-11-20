@@ -1,10 +1,19 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+
 
 # Create your models here.
 
-class User(AbstractUser):
-    tipo_usuario = models.ForeignKey('tipoUsuario', on_delete=models.CASCADE, db_column='idTipo', blank=True, null=True)
+class Clase(models.Model):
+    id_clase = models.CharField(primary_key=True, max_length=15, db_column='idClase', verbose_name='id de clase')
+    total_clase = models.IntegerField(null=True, blank=True)
+    clase_asistida = models.IntegerField(null=True, blank=True)
+    fecha = models.DateField(null=True, blank=True)
+    id_usuario = models.ForeignKey('Usuario', on_delete=models.CASCADE, db_column='idUser', blank=True, null=True)
+    id_asignatura = models.ForeignKey('Asignatura', on_delete=models.CASCADE, db_column='idAsignatura', blank=True, null=True)
+
+class Asignatura(models.Model):
+    id_asignatura = models.AutoField(primary_key=True, db_column='idAsignatura', verbose_name='id de asignatura')
+    nombre_asignatura = models.CharField(max_length=25, verbose_name='Nombre de Aignatura')
 
 class Usuario(models.Model):
     id_usuario = models.AutoField(primary_key=True, db_column='idUser', verbose_name='id del Usuario')

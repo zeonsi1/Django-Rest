@@ -43,6 +43,8 @@ class UserView(APIView):
             return JsonResponse({'error': 'Error interno del servidor'}, status=500)
 
     
-
+class ClaseView(APIView):
+    def get(self, request):
+        pass
 
 
