@@ -99,8 +99,21 @@ class AsistenciaView(APIView):
         try:
             data = JSONParser().parse(request)
             id = data['id']
-            id_alumno = ['id_alumno']
-            asis = ['asis']
+            id_alumno = data['idAlumno']
+            asis = data['asis']
+            fecha = data['fecha']
 
-        except:
-            pass
+            if id is None or fecha is None or asis is None:
+                return JsonResponse({'mensaje': 'Parámetros faltantes'}, status=400)
+
+            fecha = datetime.strptime(fecha, "%d/%m/%Y").strftime("%Y-%m-%d")
+
+            clases = Clase.objects.get(id_usuario=id_alumno, id_clase = id)
+            clases.fecha = fecha
+            clases.clase_asistida += asis
+            clases.save()
+
+            return JsonResponse({'mensaje': 'Asistencia registrada!'})
+        except Exception as e:
+            print(f'Error en la vista: {repr(e)}')
+            return JsonResponse({'error': str(e)}, status=400)
