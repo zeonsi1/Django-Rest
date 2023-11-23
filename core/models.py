@@ -9,6 +9,7 @@ class Clase(models.Model):
     clase_asistida = models.IntegerField(null=True, blank=True)
     fecha = models.DateField(null=True, blank=True)
     id_usuario = models.ForeignKey('Usuario', on_delete=models.CASCADE, db_column='idUser', blank=True, null=True)
+    id_profesor = models.ForeignKey('Usuario', on_delete=models.CASCADE, db_column='idProfesor', related_name='idProfesor', blank=True, null=True)
     id_asignatura = models.ForeignKey('Asignatura', on_delete=models.CASCADE, db_column='idAsignatura', blank=True, null=True)
 
 class Asignatura(models.Model):
@@ -17,6 +18,7 @@ class Asignatura(models.Model):
 
 class Usuario(models.Model):
     id_usuario = models.AutoField(primary_key=True, db_column='idUser', verbose_name='id del Usuario')
+    id_profesor = models.IntegerField(unique=True, db_column='idProfesor', null=True, blank=True, verbose_name='id del Profesor')
     nombre_usuario = models.CharField(max_length=50, verbose_name='Nombre del Usuario')
     pnombre_usuario = models.CharField(max_length=25, verbose_name='Primer Nombre')
     apaterno_usuario = models.CharField(max_length=25, verbose_name='Apellido Usuario')

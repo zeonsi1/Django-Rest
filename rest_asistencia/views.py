@@ -1,11 +1,11 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from core.models import Usuario
-from .serializers import UserSerializer
+from core.models import Usuario, Clase, Asignatura
+from .serializers import UserSerializer, ClaseSerializer, AsignaturaSerializer
 from rest_framework import status
-from django.contrib.auth import authenticate
 from rest_framework.parsers import JSONParser
 from django.http import JsonResponse
+from datetime import datetime
 # Create your views here.
 
 class UserView(APIView):
@@ -34,7 +34,7 @@ class UserView(APIView):
 
             usuario = Usuario.objects.get(nombre_usuario = userName)
 
-            usuario.password_usuario = newPassword;
+            usuario.password_usuario = newPassword
             usuario.save()
             return JsonResponse({'mensaje': 'Contraseña cambiada exitosamente'})
         except Usuario.DoesNotExist:
@@ -44,7 +44,63 @@ class UserView(APIView):
 
     
 class ClaseView(APIView):
-    def get(self, request):
-        pass
+    def post(self, request):
+        data = JSONParser().parse(request)
+        id = data['id']
+        clases = Clase.objects.filter(id_profesor=id).order_by('id_clase')
+        serializer = ClaseSerializer(clases, many=True)
+        
+        asig = []
+        for clase in clases:
+            asignatura_id = clase.id_asignatura_id
+            try:
+                asignatura = Asignatura.objects.get(id_asignatura=asignatura_id)
+                asig.append(asignatura)
+            except Asignatura.DoesNotExist:
+                pass
+
+        asignatura_serializers = AsignaturaSerializer(asig, many=True)
+        user = UserSerializer(Usuario.objects.get(id_profesor=id))
+
+        combined_data = []
+        for i in range(len(clases)):
+            clase_data = {
+                **serializer.data[i],
+                **asignatura_serializers.data[i],
+                **user.data,
+            }
+            combined_data.append(clase_data)
 
 
+        return JsonResponse(combined_data, safe=False)
+    
+    def put(self, request):
+        try:
+            data = JSONParser().parse(request)
+            id = data['id']
+            date = data['fecha']
+            total = data['total']
+
+            if id is None or date is None or total is None:
+                return JsonResponse({'mensaje': 'Parámetros faltantes'}, status=400)
+
+            fecha = datetime.strptime(date, "%d/%m/%Y").strftime("%Y-%m-%d")
+            clases = Clase.objects.get(id_clase=id)
+            clases.fecha = fecha
+            clases.total_clase += total
+            clases.save()
+
+            return JsonResponse({'mensaje': 'Fecha actualizada exitosamente'})
+        except Clase.DoesNotExist:
+            pass
+    
+class AsistenciaView(APIView):
+    def put(self, request):
+        try:
+            data = JSONParser().parse(request)
+            id = data['id']
+            id_alumno = ['id_alumno']
+            asis = ['asis']
+
+        except:
+            pass
