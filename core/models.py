@@ -8,6 +8,7 @@ class Clase(models.Model):
     total_clase = models.IntegerField(null=True, blank=True)
     clase_asistida = models.IntegerField(null=True, blank=True)
     fecha = models.DateField(null=True, blank=True)
+    hora = models.TimeField(auto_now_add=True, null=True)
     id_usuario = models.ForeignKey('Usuario', on_delete=models.CASCADE, db_column='idUser', blank=True, null=True)
     id_profesor = models.ForeignKey('Usuario', on_delete=models.CASCADE, db_column='idProfesor', related_name='idProfesor', blank=True, null=True)
     id_asignatura = models.ForeignKey('Asignatura', on_delete=models.CASCADE, db_column='idAsignatura', blank=True, null=True)
