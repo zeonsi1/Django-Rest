@@ -6,7 +6,7 @@ from core.models import Usuario, Clase, Asignatura
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
-        fields = ['id_usuario', 'tipo_usuario', 'pnombre_usuario', 'apaterno_usuario', 'id_profesor']
+        fields = ['id_usuario', 'tipo_usuario', 'pnombre_usuario', 'apaterno_usuario', 'id_profesor', 'mail_usuario']
         safe = False
 
 class ClaseSerializer(serializers.ModelSerializer):
