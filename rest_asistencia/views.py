@@ -120,13 +120,19 @@ class AsistenciaView(APIView):
             clases.clase_asistida += asis
             clases.save()
             
+            id_asig = clases.id_asignatura_id
+
+            asig = Asignatura.objects.get(id_asignatura = id_asig)
+
+            nombre_asignatura = asig.nombre_asignatura
+
             id_profesor = clases.id_profesor_id
 
             correo = Usuario.objects.get(id_profesor = id_profesor)
 
             correo = correo.mail_usuario
 
-            self.enviar_correo_asistencia(id_alumno, fecha, hora, correo)
+            self.enviar_correo_asistencia(id_alumno, fecha, hora, correo, id, nombre_asignatura)
             return JsonResponse({'mensaje': 'Asistencia registrada!'})
         except Usuario.DoesNotExist:
             return  JsonResponse({'error': 'Usuario no es de esta clase'}, status=404)
@@ -134,7 +140,7 @@ class AsistenciaView(APIView):
             print(f'Error en la vista: {repr(e)}')
             return JsonResponse({'error': str(e)}, status=400)
         
-    def enviar_correo_asistencia(self, id_alumno, fecha, hora, correo):
+    def enviar_correo_asistencia(self, id_alumno, fecha, hora, correo, id, nombre_asignatura):
         smtp_server = 'smtp.gmail.com'
         smtp_port = 587
         smtp_user = 'registappnoreply@gmail.com'
@@ -145,7 +151,7 @@ class AsistenciaView(APIView):
         usuario = usuario.pnombre_usuario + ' ' + usuario.apaterno_usuario
         # Configuración del correo electrónico
         subject = 'Registro de Asistencia'
-        body = f'Se registró la asistencia para el alumno {usuario} el {fecha} a las {hora_formateada}.'
+        body = f'Se registró la asistencia para el alumno {usuario} de la seccion {id} del ramo {nombre_asignatura} el {fecha} a las {hora_formateada}.'
 
         # Configuración del remitente y destinatario
         from_email = 'registappnoreply@gmail.com'
