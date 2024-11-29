@@ -13,10 +13,14 @@ class Clase(models.Model):
     id_profesor = models.ForeignKey('Usuario', on_delete=models.CASCADE, db_column='idProfesor', related_name='idProfesor', blank=True, null=True)
     id_asignatura = models.ForeignKey('Asignatura', on_delete=models.CASCADE, db_column='idAsignatura', blank=True, null=True)
 
+    def __str__(self):
+        return f'{self.id_clase}'
 class Asignatura(models.Model):
     id_asignatura = models.AutoField(primary_key=True, db_column='idAsignatura', verbose_name='id de asignatura')
     nombre_asignatura = models.CharField(max_length=25, verbose_name='Nombre de Aignatura')
 
+    def __str__(self):
+        return f'{self.nombre_asignatura}'
 class Usuario(models.Model):
     id_usuario = models.AutoField(primary_key=True, db_column='idUser', verbose_name='id del Usuario')
     id_profesor = models.IntegerField(unique=True, db_column='idProfesor', null=True, blank=True, verbose_name='id del Profesor')
@@ -28,7 +32,9 @@ class Usuario(models.Model):
     mail_usuario = models.EmailField(unique=True, blank=True, null=True, max_length=100, verbose_name='Mail del Usuario')
     tipo_usuario = models.ForeignKey('tipoUsuario', on_delete=models.CASCADE, db_column='idTipo', blank=True, null=True)
 
-
+    def __str__(self):
+        return f'{self.pnombre_usuario} {self.apaterno_usuario}'
+    
 class tipoUsuario(models.Model):
     id_tipoUsuario = models.AutoField(primary_key=True, db_column='idTipo', verbose_name='Tipo de ID')
     tipo_usuario = models.CharField(max_length=20, blank=True, null=True, unique=False, default='DEFAULT VALUE')
