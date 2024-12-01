@@ -4,6 +4,9 @@ from core.models import Usuario, Clase, Asignatura
 from .serializers import UserSerializer, ClaseSerializer, AsignaturaSerializer
 from rest_framework import status
 from rest_framework.parsers import JSONParser
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework_simplejwt.tokens import RefreshToken
 from django.http import JsonResponse, HttpResponseServerError
 from datetime import datetime
 import smtplib
@@ -22,6 +25,7 @@ class UserView(APIView):
             userName = data['usuario']
             password = data['pass']
             serializer = UserSerializer(Usuario.objects.get(nombre_usuario = userName, password_usuario = password))
+
 
             return JsonResponse(serializer.data)        
         except Usuario.DoesNotExist:
